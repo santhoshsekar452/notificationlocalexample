@@ -13,6 +13,15 @@ object NotificationHelper {
 
     @SuppressLint("ServiceCast")
     fun showReminder(context: Context, title: String, message: String) {
+        val intent = Intent(context, MainActivity::class.java)
+        intent.putExtra("screen", "home")
+
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
         val builder = NotificationCompat.Builder(
             context,
             NotificationConstants.CHANNEL_ID
@@ -21,6 +30,7 @@ object NotificationHelper {
             .setContentTitle(title)
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentIntent(pendingIntent)
             .setAutoCancel(true)
 
         val manager =
